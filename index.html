@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="quantitative finance in javascript">
+    <meta name="author" content="Jin Yang">
+    <meta name="google-site-verification" content="4IrXoRzLpuCL684J3Y19wWtY9W5KqlvwLH5EQuZh1-Q" />
+    <title>quantlib.js - quantitative finance in javascript © 2020 Jin Yang</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.52.0/lib/codemirror.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@quantlibjs">
+    <meta name="twitter:creator" content="@quantlibjs">
+    <meta name="twitter:title" content="quantlib.js">
+    <meta name="twitter:description" content="quantitative finance in javascript">
+    <meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/@quantlib/misc@latest/logo.jpg">
+
+    <!-- Facebook -->
+    <meta property="og:url" content="https://quantlib.js.org/console/">
+    <meta property="og:title" content="quantlib.js">
+    <meta property="og:description" content="quantitative finance in javascript">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://cdn.jsdelivr.net/npm/@quantlib/misc@latest/logo.jpg">
+    <meta property="og:image:secure_url" content="https://cdn.jsdelivr.net/npm/@quantlib/misc@latest/logo.jpg">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87290595-7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87290595-7');
+    </script>
+
+    <style>
+      .CodeMirror {
+        height: auto;
+      }
+      .row{
+        border-color: #C1E0FF;
+        border-width: 0.5px;
+        border-style: solid;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        margin-top: 2px;
+        margin-bottom: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="console" class="container fixed-bottom">
+      <div class="row" id="input">
+        <div class="col-1 px-0">
+          <div class="btn-group pull-right" role="group">
+            <button type="button" class="btn btn-light btn-sm" onclick="toggle();"><i class="fa fa-code"></i></button>
+          </div>
+        </div>
+        <div class="col-10">
+          <textarea id="editor"></textarea>
+        </div>
+        <div class="col-1 px-0">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-light btn-sm" onclick="run();"><i class="fa fa-play"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.52.0/lib/codemirror.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.52.0/mode/javascript/javascript.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.52.0/mode/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/eval5@1.3.0/umd/eval5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjs@6.6.1/dist/math.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@1.52.3/plotly.min.js"></script>
+    <script>var editor,counter=0;function getEditor(t,e){var o=document.getElementById(t);return CodeMirror.fromTextArea(o,{lineWrapping:!0,mode:e})}function toggle(){"javascript"===editor.options.mode?editor.setOption("mode","markdown"):editor.setOption("mode","javascript"),$("#input .fa-code").length>0?($("#input .fa-code").addClass("fa-sticky-note-o"),$("#input .fa-code").removeClass("fa-code")):($("#input .fa-sticky-note-o").addClass("fa-code"),$("#input .fa-sticky-note-o").removeClass("fa-sticky-note-o"))}function output(t,e){if(void 0!==t&&void 0!==t.type)switch(t.type){case"plot":Plotly.newPlot(`ot${e}`,t.data,t.layout,t.option);break;case"table":break;default:var o=`<code>${t}</code>`;$(`#ot${e}`).append(o)}else{o=`<code>${t}</code>`;$(`#ot${e}`).append(o)}}function print(t){return{type:"text",data:t}}function table(t){return{type:"table",data:t}}function plot(t,e,o){return{type:"plot",data:t,layout:e}}function run(){var t=counter++,e=editor.getValue();if($(`<div class="row" id="cell${t}">\n<div class="col-1 px-0"></div>\n<div class="col-10">\n<div id="in${t}">${e}</div>\n<div id="ot${t}"></div>\n</div>\n<div class="col-1 px-0"></div>\n</div>`).insertBefore("#input"),"javascript"===editor.options.mode)try{output(o=interpreter.evaluate(e),t)}catch(i){output(i.message,t)}else try{var o=marked(e);$(`#ot${t}`).append(`${o}`);var i=document.getElementById(`ot${t}`);renderMathInElement(i,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"\\[",right:"\\]",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1}]})}catch(i){output(i.message,t)}editor.setValue("")}function onkeydown(t){var e,o;if(window.event?(e=window.event.keyCode,o=!!window.event.shiftKey):(e=t.which,o=!!t.shiftKey),o)switch(e){case 16:break;default:run()}}var interpreter=new eval5.Interpreter(window);import("https://cdn.jsdelivr.net/npm/@quantlib/ql@latest/ql.mjs").then(t=>{window.ql=t,editor=getEditor("editor","javascript")}),$(document).on({mouseenter:function(){$(this).css({"border-color":"#C1E0FF"})},mouseleave:function(){$(this).css({"border-color":"#ffffff"})}},".row");</script>
+  </body>
+</html>
